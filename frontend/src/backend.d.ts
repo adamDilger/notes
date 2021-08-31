@@ -3,6 +3,9 @@ interface backend {
 
 	readFileForDir(subPath: string): string;
 	readFile(subPath: string, name: string): string;
+
+	saveFileForDir(subPath: string): string;
+	saveFile(subPath: string, name: string): string;
 }
 
 type logFunction = (message: string) => void;

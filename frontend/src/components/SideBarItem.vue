@@ -2,6 +2,8 @@
 	<div>
 		<div
 			:style="{ marginLeft: indent + 'em' }"
+			class="pl-2 cursor-pointer hover:bg-gray-300"
+			:class="[isSelected ? 'bg-gray-200 font-bold' : '']"
 			@click="$emit('file-clicked', file)"
 		>
 			{{ file.Name }}
@@ -14,15 +16,16 @@
 				@file-clicked="$emit('file-clicked', $event)"
 				:file="f"
 				:indent="indent + 1"
+				:selected-file="selectedFile"
 			/>
 		</template>
 	</div>
 </template>
 
 <script lang="ts" setup>
-import { defineProps } from "vue";
+import { computed, defineProps } from "vue";
 
-defineProps({
+const props = defineProps({
 	file: {
 		type: Object,
 		required: true,
@@ -31,7 +34,10 @@ defineProps({
 		type: Number,
 		required: true,
 	},
+	selectedFile: Object,
+});
+
+const isSelected = computed(() => {
+	return props.file == props.selectedFile;
 });
 </script>
-
-<style></style>

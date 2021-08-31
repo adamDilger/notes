@@ -56,7 +56,10 @@ func readFileForDir(subPath string) (string, error) {
 
 	path := filepath.Join(root, subPath, "index.md")
 
-	fmt.Println("forDir: ", path)
+	if _, err := os.Stat("/path/to/whatever"); os.IsNotExist(err) {
+		return "", nil
+	}
+
 	a, err := os.ReadFile(path)
 
 	if err != nil {
