@@ -4,6 +4,8 @@ const files = ref([]);
 
 async function init() {
   files.value = (await window.backend.getFiles()).Children;
+  
+  console.log(files.value)
 }
 
 export default () => {

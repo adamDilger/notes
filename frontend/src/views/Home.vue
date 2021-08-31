@@ -1,7 +1,11 @@
 <template>
 	<div>
 		<side-bar @file-clicked="fileClicked" />
-		<vue-simplemde v-model="content" ref="markdownEditor" :configs="{ toolbar: false }" />
+		<vue-simplemde
+			v-model="content"
+			ref="markdownEditor"
+			:configs="{ toolbar: false }"
+		/>
 	</div>
 </template>
 
@@ -27,7 +31,9 @@ export default {
 				await initFiles();
 
 				if (files.value[0]) {
-					content.value = await readFile(files.value[0].SubPath + "/" + files.value[0].Name);
+					content.value = await readFile(
+						files.value[0].SubPath + "/" + files.value[0].Name
+					);
 				}
 			};
 

@@ -44,12 +44,15 @@ type TreeEntry struct {
 }
 
 func getFiles() (*TreeEntry, error) {
-	root := "/Users/adamdilger/Documents/notes"
+	dirname, _ := os.UserHomeDir()
+	root := dirname + "/Documents/notes"
+
 	return WalkFiles(root, "", "")
 }
 
 func readFileForDir(subPath string) (string, error) {
-	root := "/Users/adamdilger/Documents/notes"
+	dirname, _ := os.UserHomeDir()
+	root := dirname + "/Documents/notes"
 
 	path := filepath.Join(root, subPath, "index.md")
 
@@ -64,7 +67,8 @@ func readFileForDir(subPath string) (string, error) {
 }
 
 func readFile(subPath, name string) (string, error) {
-	root := "/Users/adamdilger/Documents/notes"
+	dirname, _ := os.UserHomeDir()
+	root := dirname + "/Documents/notes"
 
 	path := filepath.Join(root, subPath, name)
 	fmt.Println(path)
