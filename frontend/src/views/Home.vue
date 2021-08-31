@@ -9,50 +9,32 @@
 	</div>
 </template>
 
-<script>
+<script setup lang="ts">
 import { ref } from "vue";
+import useFiles from "../store/useFiles";
+
 import VueSimplemde from "vue-simplemde";
 import SideBar from "../components/SideBar.vue";
 
-import useFiles from "../store/useFiles";
+const content = ref<string>("");
+const markdownEditor = ref(null);
 
-export default {
-	name: "Home",
-	components: { VueSimplemde, SideBar },
-	setup() {
-		const message = ref("Click the Icon");
-		const content = ref(null);
-		const markdownEditor = ref(null);
+const { init: initFiles, root, readFile } = useFiles();
 
-		const { init: initFiles, files, readFile } = useFiles();
+const getMessage = async () => {
+	await initFiles();
 
-		try {
-			const getMessage = async () => {
-				await initFiles();
-
-				if (files.value[0]) {
-					content.value = await readFile(
-						files.value[0].SubPath + "/" + files.value[0].Name
-					);
-				}
-			};
-
-			getMessage();
-		} catch (e) {
-			console.log(e);
-		}
-
-		return {
-			message,
-			content,
-			markdownEditor,
-
-			async fileClicked(file) {
-				content.value = await readFile(file);
-			},
-		};
-	},
+	if (root.value?.Children[0]) {
+		let a = root.value.Children[0];
+		content.value = await readFile(a);
+	}
 };
+
+getMessage();
+
+async function fileClicked(file: TreeEntity) {
+	content.value = await readFile(file);
+}
 </script>
 
 <style>
