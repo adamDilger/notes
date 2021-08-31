@@ -1,42 +1,43 @@
 <template>
-  <div class="home">
-    <img
-      @click="getMessage"
-      alt="Vue logo"
-      src="../assets/appicon.png"
-      :style="{ height: '400px' }"
-    />
-    <HelloWorld :msg="message" />
-  </div>
+	<div>
+		<vue-simplemde v-model="content" ref="markdownEditor" />
+	</div>
 </template>
 
 <script>
 import { ref } from "vue";
-import HelloWorld from "@/components/HelloWorld.vue";
+import VueSimplemde from "vue-simplemde";
 
 export default {
-  name: "Home",
-  components: {
-    HelloWorld,
-  },
-  setup() {
-    const message = ref("Click the Icon");
+	name: "Home",
+	components: { VueSimplemde },
+	setup() {
+		const message = ref("Click the Icon");
+		const content = ref(null);
+		const markdownEditor = ref(null);
 
-    const getMessage = () => {
-      window.backend
-        .basic()
-        .then((res) => {
-          message.value = res;
-        })
-        .catch((err) => {
-          console.log(err);
-        });
-    };
+		try {
+			const getMessage = async () => {
+				const files = await window.backend.getFiles();
+				console.log("files", files);
 
-    return {
-      message: message,
-      getMessage: getMessage,
-    };
-  },
+				content.value = await window.backend.readFile(files[0]);
+			};
+
+			getMessage();
+		} catch (e) {
+			console.log(e);
+		}
+
+		return {
+			message,
+			content,
+			markdownEditor,
+		};
+	},
 };
 </script>
+
+<style>
+@import "~simplemde/dist/simplemde.min.css";
+</style>
