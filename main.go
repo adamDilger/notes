@@ -2,10 +2,9 @@ package main
 
 import (
 	_ "embed"
-	"io/ioutil"
+	"fmt"
 	"os"
 	"path/filepath"
-	"strings"
 
 	"github.com/wailsapp/wails"
 )
@@ -21,7 +20,6 @@ var js string
 var css string
 
 func main() {
-
 	app := wails.CreateApp(&wails.AppConfig{
 		Width:     1024,
 		Height:    768,
@@ -33,26 +31,44 @@ func main() {
 	})
 	app.Bind(basic)
 	app.Bind(getFiles)
+	app.Bind(readFileForDir)
 	app.Bind(readFile)
 	app.Run()
 }
 
-func getFiles() ([]string, error) {
-	root := "/Users/adamdilger/Documents/notes"
-
-	var files []string
-	err := filepath.Walk(root, func(path string, info os.FileInfo, err error) error {
-		if !info.IsDir() && strings.HasSuffix(info.Name(), ".md") {
-			files = append(files, path)
-		}
-		return nil
-	})
-
-	return files, err
+type TreeEntry struct {
+	Name     string
+	SubPath  string
+	IsDir    bool
+	Children []TreeEntry
 }
 
-func readFile(file string) (string, error) {
-	a, err := ioutil.ReadFile(file)
+func getFiles() (*TreeEntry, error) {
+	root := "/Users/adamdilger/Documents/notes"
+	return WalkFiles(root, "", "")
+}
+
+func readFileForDir(subPath string) (string, error) {
+	root := "/Users/adamdilger/Documents/notes"
+
+	path := filepath.Join(root, subPath, "index.md")
+
+	fmt.Println("forDir: ", path)
+	a, err := os.ReadFile(path)
+
+	if err != nil {
+		return "", err
+	}
+
+	return string(a), nil
+}
+
+func readFile(subPath, name string) (string, error) {
+	root := "/Users/adamdilger/Documents/notes"
+
+	path := filepath.Join(root, subPath, name)
+	fmt.Println(path)
+	a, err := os.ReadFile(path)
 
 	if err != nil {
 		return "", err
