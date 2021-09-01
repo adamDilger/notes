@@ -1,4 +1,5 @@
 import { ref } from "vue";
+import TreeEntity from "@/model/TreeEntity";
 
 const root = ref<TreeEntity>();
 

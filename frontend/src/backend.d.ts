@@ -1,3 +1,5 @@
+import TreeEntity from "./model/TreeEntity";
+
 interface backend {
 	getFiles(): TreeEntity;
 
@@ -32,13 +34,6 @@ declare global {
 	interface Window {
 		backend: backend;
 		wails: wails;
-	}
-
-	interface TreeEntity {
-		Children: Array<TreeEntity>;
-		IsDir: Boolean;
-		SubPath: string;
-		Name: string;
 	}
 }
 

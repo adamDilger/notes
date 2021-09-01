@@ -10,10 +10,14 @@
 </template>
 
 <script setup lang="ts">
+import { defineEmits } from 'vue';
 import useFiles from "../store/useFiles";
 import SideBarItem from "./SideBarItem.vue";
 
 const { root, selectedFile } = useFiles();
+
+defineEmits(['file-clicked']);
 </script>
 
-<style></style>
+<style>
+</style>
