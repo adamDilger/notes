@@ -25,17 +25,11 @@
 <script lang="ts" setup>
 import { computed, defineProps } from "vue";
 
-const props = defineProps({
-	file: {
-		type: Object,
-		required: true,
-	},
-	indent: {
-		type: Number,
-		required: true,
-	},
-	selectedFile: Object,
-});
+const props = defineProps<{
+	file: TreeEntity,
+	indent: number,
+	selectedFile?: TreeEntity
+}>();
 
 const isSelected = computed(() => {
 	return props.file == props.selectedFile;

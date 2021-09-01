@@ -2,7 +2,7 @@ import { ref } from "vue";
 
 const root = ref<TreeEntity>();
 
-const selectedFile = ref<TreeEntity | null>(null);
+const selectedFile = ref<TreeEntity | undefined>();
 
 async function init() {
 	root.value = await window.backend.getFiles();

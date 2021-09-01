@@ -4,11 +4,7 @@
 			<side-bar @file-clicked="fileClicked" />
 		</div>
 		<div class="flex-1">
-			<vue-simplemde
-				v-model="content"
-				ref="markdownEditor"
-				:configs="{ toolbar: false }"
-			/>
+			<vue-simplemde v-model="content" ref="markdownEditor" :configs="{ toolbar: false }" />
 		</div>
 	</div>
 </template>
@@ -18,7 +14,7 @@ import { ref } from "vue";
 import useFiles from "../store/useFiles";
 import { debouncedWatch } from "@vueuse/core";
 
-import VueSimplemde from "vue-simplemde";
+import * as VueSimplemde from "vue-simplemde"
 import SideBar from "../components/SideBar.vue";
 
 const content = ref<string>("");
