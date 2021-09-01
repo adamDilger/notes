@@ -1,36 +1,39 @@
 <template>
 	<div class="flex p-2 h-full">
-		<div class="py-2 px-1 w-32">
+		<div class="py-2 px-1 w-32 overflow-scroll">
 			<side-bar @file-clicked="fileClicked" />
 		</div>
-		<div class="flex-1 h-full">
-			<textarea ref="ta" />
-		</div>
+		<section class="flex-1 h-full" ref="ta" />
 	</div>
 </template>
 
 <script setup lang="ts">
-import { ref, onMounted } from "vue";
+import { ref, onMounted, watch } from "vue";
 import useFiles from "../store/useFiles";
 
 import { debouncedWatch } from "@vueuse/core";
-import CodeMirror from "codemirror";
+import { EditorState, EditorView, basicSetup } from "@codemirror/basic-setup"
+import { markdown } from "@codemirror/lang-markdown"
 
 import SideBar from "../components/SideBar.vue";
 
-const ta = ref(null);
+const ta = ref<HTMLTextAreaElement>();
 
 const content = ref<string>("");
 const fileChanged = ref<boolean>(true);
 
 const { init: initFiles, root, readFile, saveCurrentFile } = useFiles();
+let cm: EditorView;
 
 onMounted(() => {
-	var myCodeMirror = CodeMirror.fromTextArea(ta.value, {
-		lineNumbers: true,
-		mode: "htmlmixed",
-	});
-	console.log(myCodeMirror, myCodeMirror.getValue());
+	if (!ta.value) return;
+
+	cm = new EditorView({
+		state: EditorState.create({ doc: "# OH", extensions: [basicSetup, markdown(), EditorView.lineWrapping] }),
+		parent: ta.value,
+	})
+
+	console.log(cm);
 });
 
 const getMessage = async () => {
@@ -50,6 +53,14 @@ async function fileClicked(file: any) {
 	console.log("fileClicked", file, content.value);
 	fileChanged.value = true;
 }
+
+watch(content, (val) => {
+	//cm.update
+	//cm.getDoc().setValue(val);
+	cm.setState(
+		EditorState.create({ doc: val, extensions: [basicSetup, markdown()] }),
+	);
+});
 
 debouncedWatch(
 	content,
