@@ -1,13 +1,17 @@
 import TreeEntity from "./model/TreeEntity";
 
+interface Files {
+	GetFiles(): TreeEntity;
+
+	ReadFileForDir(subPath: string): string;
+	ReadFile(subPath: string, name: string): string;
+
+	SaveFileForDir(subPath: string, content: string): string;
+	SaveFile(subPath: string, name: string, content: string): string;
+}
+
 interface backend {
-	getFiles(): TreeEntity;
-
-	readFileForDir(subPath: string): string;
-	readFile(subPath: string, name: string): string;
-
-	saveFileForDir(subPath: string): string;
-	saveFile(subPath: string, name: string): string;
+	Files: Files;
 }
 
 type logFunction = (message: string) => void;

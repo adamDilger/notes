@@ -1,4 +1,4 @@
-package main
+package files
 
 import (
 	"os"
@@ -6,7 +6,7 @@ import (
 	"strings"
 )
 
-func WalkFiles(root, subpath, name string) (*TreeEntry, error) {
+func walkFiles(root, subpath, name string) (*TreeEntry, error) {
 	files, err := os.ReadDir(filepath.Join(root, subpath))
 	if err != nil {
 		return nil, err
@@ -19,7 +19,7 @@ func WalkFiles(root, subpath, name string) (*TreeEntry, error) {
 
 	for _, file := range files {
 		if file.IsDir() {
-			child, err := WalkFiles(root, filepath.Join(subpath, file.Name()), file.Name())
+			child, err := walkFiles(root, filepath.Join(subpath, file.Name()), file.Name())
 			if err != nil {
 				return nil, err
 			}
