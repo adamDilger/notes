@@ -16,7 +16,7 @@ export default () => {
 		root,
 		selectedFile,
 
-		async readFile(file: TreeEntity) {
+		async readFile(file: TreeEntity): Promise<string> {
 			selectedFile.value = file;
 
 			if (file.IsDir) {
@@ -27,9 +27,9 @@ export default () => {
 		},
 
 		async saveCurrentFile(content: string) {
-			if (!selectedFile.value) throw Error("No file selected.");
+			console.log("saveCurrentFile", selectedFile.value, content);
 
-			console.log(selectedFile.value, content);
+			if (!selectedFile.value) throw Error("No file selected.");
 
 			if (selectedFile.value.IsDir) {
 				return await window.backend.Files.SaveFileForDir(

@@ -3,8 +3,13 @@
 </template>
 
 <style>
-html body,
+html,
+body,
 #app {
 	height: 100vh;
+}
+
+body {
+	font-size: 16px;
 }
 </style>

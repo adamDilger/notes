@@ -1,10 +1,12 @@
 <template>
 	<div
-		:style="{ marginLeft: indent + 'em' }"
-		class="pl-2 cursor-pointer hover:bg-gray-300"
+		:style="{ paddingLeft: indent + 0.5 + 'em' }"
+		class="cursor-pointer hover:bg-gray-100"
 		:class="[isSelected ? 'bg-gray-200 font-bold' : '']"
 		@click="$emit('file-clicked', file)"
-	>{{ file.Name }}</div>
+	>
+		{{ file.Name }}
+	</div>
 
 	<template v-if="file.Children">
 		<side-bar-item
@@ -23,12 +25,12 @@ import TreeEntity from "@/model/TreeEntity";
 import { computed, defineProps, defineEmits } from "vue";
 
 const props = defineProps<{
-	file: TreeEntity,
-	indent: number,
-	selectedFile?: TreeEntity
+	file: TreeEntity;
+	indent: number;
+	selectedFile?: TreeEntity;
 }>();
 
-defineEmits(['file-clicked']);
+defineEmits(["file-clicked"]);
 
 const isSelected = computed(() => {
 	return props.file == props.selectedFile;
