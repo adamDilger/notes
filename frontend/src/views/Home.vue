@@ -1,8 +1,9 @@
 <template>
 	<div class="flex h-full">
-		<div class="py-2 px-1 w-32 overflow-auto bg-gray-300">
-			<side-bar @file-clicked="fileClicked" />
-		</div>
+		<side-bar
+			class="py-2 px-1 w-32 overflow-auto bg-gray-300"
+			@file-clicked="fileClicked"
+		/>
 		<div class="flex-1 flex flex-col">
 			<div class="py-2 px-4 flex justify-between bg-gray-500 text-white">
 				<span class="font-bold">
