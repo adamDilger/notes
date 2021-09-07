@@ -3,11 +3,12 @@
 		<side-bar
 			class="py-2 px-1 w-32 overflow-auto bg-gray-300"
 			@file-clicked="fileClicked"
+			@show-popup="onShowPopup"
 		/>
 		<div class="flex-1 flex flex-col">
 			<div class="py-2 px-4 flex justify-between bg-gray-500 text-white">
 				<span class="font-bold">
-					{{ selectedFile?.Name || "" }}
+					{{ currentFile?.Name || "" }}
 				</span>
 				<span v-if="saving">
 					Saving...
@@ -16,6 +17,8 @@
 			<section class="flex-1 p-2" ref="ta" />
 		</div>
 	</div>
+
+	<Popup :show="showPopup" @close="onClosePopup" @action="doPopupAction" />
 </template>
 
 <script setup lang="ts">
@@ -27,18 +30,23 @@ import { EditorState, EditorView, basicSetup } from "@codemirror/basic-setup";
 import { markdown } from "@codemirror/lang-markdown";
 
 import SideBar from "../components/SideBar.vue";
+import Popup from "../components/Popup.vue";
+import TreeEntity from "@/model/TreeEntity";
 
 const ta = ref<HTMLTextAreaElement>();
 
 const content = ref<string>("");
 const saving = ref(false);
 
+const showPopup = ref(false);
+
 const {
 	init: initFiles,
 	root,
 	readFile,
 	saveCurrentFile,
-	selectedFile,
+	currentFile,
+	optionsFile,
 } = useFiles();
 let cmView: EditorView;
 let cmState: EditorState;
@@ -92,6 +100,21 @@ async function fileClicked(file: any) {
 	ignoreUpdates(() => (content.value = ""));
 	createState(await readFile(file));
 	cmView.setState(cmState);
+}
+
+function onShowPopup(file?: TreeEntity) {
+	optionsFile.value = file;
+	showPopup.value = true;
+}
+
+function onClosePopup() {
+	optionsFile.value = undefined;
+	showPopup.value = false;
+}
+
+function doPopupAction(action: string) {
+	onClosePopup();
+	alert(action);
 }
 </script>
 

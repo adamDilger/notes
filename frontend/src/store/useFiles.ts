@@ -3,7 +3,10 @@ import TreeEntity from "@/model/TreeEntity";
 
 const root = ref<TreeEntity>();
 
-const selectedFile = ref<TreeEntity | undefined>();
+// current is the file open in the editor
+const currentFile = ref<TreeEntity | undefined>();
+// options is the file being edited by options e.g. right click
+const optionsFile = ref<TreeEntity | undefined>();
 
 async function init() {
 	root.value = await window.backend.Files.GetFiles();
@@ -14,10 +17,12 @@ export default () => {
 		init,
 
 		root,
-		selectedFile,
+		currentFile,
+
+		optionsFile,
 
 		async readFile(file: TreeEntity): Promise<string> {
-			selectedFile.value = file;
+			currentFile.value = file;
 
 			if (file.IsDir) {
 				return await window.backend.Files.ReadFileForDir(file.SubPath);
@@ -27,20 +32,20 @@ export default () => {
 		},
 
 		async saveCurrentFile(content: string) {
-			console.log("saveCurrentFile", selectedFile.value, content);
+			console.log("saveCurrentFile", currentFile.value, content);
 
-			if (!selectedFile.value) throw Error("No file selected.");
+			if (!currentFile.value) throw Error("No file selected.");
 
-			if (selectedFile.value.IsDir) {
+			if (currentFile.value.IsDir) {
 				return await window.backend.Files.SaveFileForDir(
-					selectedFile.value.SubPath,
+					currentFile.value.SubPath,
 					content
 				);
 			}
 
 			return await window.backend.Files.SaveFile(
-				selectedFile.value.SubPath,
-				selectedFile.value.Name,
+				currentFile.value.SubPath,
+				currentFile.value.Name,
 				content
 			);
 		},

@@ -1,31 +1,32 @@
 <template>
-	<aside @mouseup.right="rightClick" @contextmenu.prevent class="relative">
+	<aside
+		class="relative"
+		@mouseup.right="$emit('show-popup')"
+		@contextmenu.prevent
+	>
 		<SideBarItem
 			v-for="f in root?.Children"
 			:key="f.Name"
 			@file-clicked="$emit('file-clicked', $event)"
 			:file="f"
 			:indent="0"
-			:selectedFile="selectedFile"
+			@right-clicked="rightClick"
 		/>
-		<Popup :show="showPopup" />
 	</aside>
 </template>
 
 <script setup lang="ts">
-import { defineEmits, ref } from "vue";
+import TreeEntity from "@/model/TreeEntity";
+import { defineEmits } from "vue";
 import useFiles from "../store/useFiles";
 import SideBarItem from "./SideBarItem.vue";
-import Popup from "./Popup.vue";
 
-const { root, selectedFile } = useFiles();
+const { root } = useFiles();
 
-defineEmits(["file-clicked"]);
+const emit = defineEmits(["file-clicked", "show-popup"]);
 
-const showPopup = ref(false);
-
-function rightClick() {
-	showPopup.value = true;
+function rightClick(file: TreeEntity) {
+	emit("show-popup", file);
 }
 </script>
 
