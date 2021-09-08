@@ -22,7 +22,6 @@ func main() {
 		Title:     "Notes",
 		JS:        js,
 		CSS:       css,
-		Colour:    "#131313",
 	})
 
 	app.Bind(files.NewFiles())

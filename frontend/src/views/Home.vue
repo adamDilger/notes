@@ -1,20 +1,17 @@
 <template>
-	<div class="flex h-full">
+	<div class="flex h-screen w-screen">
 		<side-bar
-			class="py-2 px-1 w-32 overflow-auto bg-gray-300"
+			class="py-2 px-1 overflow-y-auto overflow-x-none bg-gray-300 w-60"
 			@file-clicked="fileClicked"
 			@show-popup="onShowPopup"
 		/>
-		<div class="flex-1 flex flex-col">
+
+		<div class="flex-1 flex flex-col h-full overflow-hidden">
 			<div class="py-2 px-4 flex justify-between bg-gray-500 text-white">
-				<span class="font-bold">
-					{{ currentFile?.Name || "" }}
-				</span>
-				<span v-if="saving">
-					Saving...
-				</span>
+				<span class="font-bold">{{ currentFile?.Name || "" }}</span>
+				<span v-if="saving">Saving...</span>
 			</div>
-			<section class="flex-1 p-2" ref="ta" />
+			<section class="flex-1 p-2 overflow-y-scroll overflow-x-none" ref="ta" />
 		</div>
 	</div>
 
@@ -120,4 +117,10 @@ function doPopupAction(action: string) {
 
 <style>
 @import "~simplemde/dist/simplemde.min.css";
+</style>
+
+<style>
+.cm-editor.cm-focused {
+	outline: none;
+}
 </style>

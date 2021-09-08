@@ -1,23 +1,19 @@
 <template>
 	<div
 		:style="{ paddingLeft: indent + 0.5 + 'em' }"
-		class="cursor-pointer hover:bg-gray-100 select-none"
+		class="cursor-pointer hover:bg-gray-100 select-none whitespace-nowrap"
 		:class="[
 			isOptions
 				? 'bg-red-400 font-bold'
 				: isCurrent
-				? 'bg-gray-200 font-bold'
-				: '',
+					? 'bg-gray-200 font-bold'
+					: '',
 		]"
 		@click="$emit('file-clicked', file)"
 		@mouseup.right.stop="$emit('right-clicked', file)"
 		@contextmenu.prevent
 	>
-		<span
-			v-if="file.IsDir"
-			class="inline-block h-full"
-			@click.stop="toggleExpanded"
-		>
+		<span v-if="file.IsDir" class="inline-block h-full" @click.stop="toggleExpanded">
 			<template v-if="expanded">
 				<chevron-down-icon class="h-5 w-5" />
 			</template>
