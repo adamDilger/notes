@@ -8,6 +8,9 @@ interface Files {
 
 	SaveFileForDir(subPath: string, content: string): string;
 	SaveFile(subPath: string, name: string, content: string): string;
+
+	CreateFile(subpath?: string, name: string);
+	DeleteFile(subpath?: string, name: string);
 }
 
 interface backend {

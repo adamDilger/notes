@@ -29,6 +29,15 @@ func (f Files) GetFiles() (*TreeEntry, error) {
 	return walkFiles(f.root, "", "")
 }
 
+func (f Files) CreateFile(subpath, name string) error {
+	_, err := os.Create(filepath.Join(f.root, subpath, name))
+	return err
+}
+
+func (f Files) DeleteFile(subpath, name string) error {
+	return os.Remove(filepath.Join(f.root, subpath, name))
+}
+
 func (f Files) ReadFileForDir(subPath string) (string, error) {
 	return f.ReadFile(subPath, "index.md")
 }

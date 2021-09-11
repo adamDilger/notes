@@ -109,9 +109,45 @@ function onClosePopup() {
 	showPopup.value = false;
 }
 
-function doPopupAction(action: string) {
+async function doPopupAction(action: string) {
+	const tree = optionsFile.value || root.value;
+
+	if (!tree) return;
+
+	switch (action) {
+		case "newnote": {
+			let filename = prompt("File name");
+
+			if (filename) {
+				await window.backend.Files.CreateFile(
+					optionsFile.value?.SubPath,
+					filename
+				);
+
+				tree.Children.push({
+					Children: [],
+					IsDir: false,
+					SubPath: optionsFile.value?.SubPath || "/",
+					Name: filename,
+				});
+			}
+			break;
+		}
+		case "deletenote": {
+			// find the parent of the root
+
+			await window.backend.Files.DeleteFile(
+				optionsFile.value?.SubPath,
+				optionsFile.value?.Name || ""
+			);
+
+			initFiles();
+
+			break;
+		}
+	}
+
 	onClosePopup();
-	alert(action);
 }
 </script>
 

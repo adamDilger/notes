@@ -17,7 +17,7 @@
 				v-for="m in menuItems"
 				:key="m.label"
 				class="px-2 py-2 cursor-pointer hover:bg-gray-200 text-sm"
-				@click="$emit('action', m.label)"
+				@click="$emit('action', m.action)"
 			>
 				<span>
 					<component
@@ -71,14 +71,21 @@ function clickOut() {
 
 const menuItems = computed(() => {
 	if (optionsFile.value && optionsFile.value.IsDir) {
-		return [{ label: "Delete Folder", icon: XCircleIcon }];
+		return [
+			{
+				action: "newnote",
+				label: "New note in " + optionsFile.value.Name,
+				icon: XCircleIcon,
+			},
+			{ action: "deletefolder", label: "Delete folder", icon: XCircleIcon },
+		];
 	} else if (optionsFile.value && optionsFile.value) {
-		return [{ label: "Delete Note", icon: XCircleIcon }];
+		return [{ action: "deletenote", label: "Delete note", icon: XCircleIcon }];
 	}
 
 	return [
-		{ label: "New Note", icon: PlusCircleIcon },
-		{ label: "New Folder", icon: FolderAddIcon },
+		{ action: "newnote", label: "New note", icon: PlusCircleIcon },
+		{ action: "newfolder", label: "New folder", icon: FolderAddIcon },
 	];
 });
 </script>
